@@ -1,0 +1,8 @@
+manim==0.22.0
+sherpa-onnx>=1.12
+soundfile
+numpy
+scipy
+contourpy
+pyyaml
+edge-tts  # 可选：能访问微软语音服务时用 --tts edge

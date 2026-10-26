@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+episodes/*/build/
+episodes/*/*_preview.mp4
+episodes/*/*_preview.srt
