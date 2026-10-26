@@ -179,14 +179,18 @@ class Section(VGroup):
         return out
 
     def current_marks(self, n=5):
-        """电流方向符号：⊙ 流出纸面，⊗ 流入纸面。右侧内绕组 ⊙、外绕组 ⊗，左侧相反。"""
+        """电流方向符号：⊙ 流出纸面，⊗ 流入纸面。
+
+        画面 x 向右、z 向上，出纸面方向为 x × z = -y。内绕组电流 +phi 在右侧剖面指向 +y，
+        即流入纸面：右侧内绕组 ⊗、外绕组 ⊙，左侧相反。这样同屏的 B 箭头和力箭头满足 F = I L × B。
+        """
         g = VGroup()
         h = self.m.half_h
         zs = np.linspace(-h * 0.8, h * 0.8, n)
         for (r0, r1), sign in ((self.m.lv, 1), (self.m.hv, -1)):
             for side in (-1, 1):
                 for z in zs:
-                    out_of_page = (sign * side) > 0
+                    out_of_page = (sign * side) < 0
                     g.add(current_symbol(self.p((r0 + r1) / 2, z, side), out_of_page, 0.13))
         return g
 

@@ -150,7 +150,7 @@ class S02_Squared(NarratedScene):
         l2 = T("短路电流", 24, color=DIM).next_to(x2 + base, DOWN, buff=0.15)
         self.play(Create(axis), FadeIn(b1), FadeIn(l1), FadeIn(b2), FadeIn(l2), run_time=0.6)
         self.play(hgt.animate.set_value(3.5), run_time=1.4, rate_func=rush_from)
-        times = T("十几～几十倍", 30, color=FORCE, bold=True).next_to(x2 + base + UP * 3.5, UP, buff=0.15)
+        times = T("峰值：十几～几十倍", 30, color=FORCE, bold=True).next_to(x2 + base + UP * 3.5, UP, buff=0.15)
         self.play(FadeIn(times, shift=UP * 0.2), run_time=0.4)
 
         # “而电磁力，和电流的平方成正比”
@@ -259,8 +259,8 @@ class S04_RadialForce(NarratedScene):
         self.add(sec, fl, marks)
 
         # “电流在磁场里会受力，这就是洛伦兹力。”
-        f1 = VGroup(T("洛伦兹力", 34, bold=True), T("F = I × B", 50, color=ACCENT, bold=True)).arrange(RIGHT, buff=0.4)
-        f3 = T("电流在磁场里受力", 24, color=DIM)
+        f1 = VGroup(T("安培力", 34, bold=True), T("F = I L × B", 50, color=ACCENT, bold=True)).arrange(RIGHT, buff=0.4)
+        f3 = T("电流在磁场里受力（本质是洛伦兹力）", 24, color=DIM)
         formula = VGroup(f1, f3).arrange(DOWN, buff=0.18).move_to(RIGHT * PANEL_X + UP * 2.85)
         self.play(FadeIn(f1[0]), Write(f1[1]), run_time=1.2)
         self.play(FadeIn(f3), run_time=0.4)
@@ -354,7 +354,7 @@ class S05_AxialForce(NarratedScene):
         # “端部的线饼受力最大，容易歪倒；”
         self.at(2)
         end_discs = VGroup(*[w[i] for grp in (sec.lv, sec.hv) for w in grp for i in (0, discs - 1)])
-        d_lab = place(VGroup(T("端部线饼", 28, color=FORCE, bold=True), T("受力最大，容易歪倒", 24))
+        d_lab = place(VGroup(T("端部线饼", 28, color=FORCE, bold=True), T("单个受力最大，容易被压弯", 24))
                       .arrange(DOWN, aligned_edge=LEFT, buff=0.08), 1.75)
         self.play(end_discs.animate.set_fill(FORCE, 1), FadeIn(d_lab), run_time=0.6)
         tilts = []
@@ -437,7 +437,7 @@ class S06_TimeWave(NarratedScene):
         cdc = DashedVMobject(ax_i.plot(i_dc, x_range=[0, T_END, 0.001], color=ACCENT, stroke_width=4), num_dashes=40)
         ldc = place(tag("衰减的直流分量（虚线）", ACCENT, 24), 2.45)
         self.play(Create(cdc), FadeIn(ldc), run_time=1.0)
-        lac = place(T("叠加在 50 Hz 交流上", 24, color=LV), 1.85)
+        lac = place(T("最严重时出现，叠加在 50 Hz 交流上", 22, color=LV), 1.85)
         self.play(FadeIn(lac), run_time=0.4)
 
         # “力跟着电流的平方走：”
@@ -460,7 +460,7 @@ class S06_TimeWave(NarratedScene):
         # “交流自己平方，给出一百赫兹的力。”
         self.at(4)
         c100 = ax_f.plot(lambda t: i_ac(t) ** 2 + 0.1, x_range=[0, T_END, 0.0005], color=HV, stroke_width=2.5)
-        l100 = place(VGroup(T("交流²", 24, color=HV, bold=True), T("→ 100 Hz 成分", 24, color=HV))
+        l100 = place(VGroup(T("交流²", 24, color=HV, bold=True), T("→ 100 Hz 成分 + 恒定分量", 24, color=HV))
                      .arrange(DOWN, aligned_edge=LEFT, buff=0.06), -0.95)
         note = T("（分量上下错开画，只看频率）", 18, color=DIM).next_to(ax_f, UP, buff=0.05).align_to(ax_f, RIGHT)
         self.play(Create(c100), FadeIn(l100), FadeIn(note), run_time=1.3)
@@ -468,7 +468,7 @@ class S06_TimeWave(NarratedScene):
         # “所以力方向不变，一下下猛敲绕组，前几个周期最狠。”
         self.at(5)
         self.play(FadeOut(c50), FadeOut(c100), FadeOut(note), cf.animate.set_stroke(opacity=1), run_time=0.5)
-        pos = place(tag("F ≥ 0：方向不变", FORCE, 26), -1.95)
+        pos = place(tag("i² ≥ 0：力方向不变", FORCE, 26), -1.95)
         self.play(FadeIn(pos), run_time=0.4)
         peaks = Rectangle(width=ax_f.c2p(0.045, 0)[0] - ax_f.c2p(0, 0)[0], height=2.0, color=ACCENT, stroke_width=4)
         peaks.move_to(ax_f.c2p(0.0225, 1.95))
@@ -515,10 +515,11 @@ class S07_Consequence(NarratedScene):
         # “要用短路试验，或者计算校核来证明。”
         self.at(2)
         b1 = tag("短路承受能力试验", HV, 28)
-        b2 = tag("计算 + 设计校核", LV, 28)
+        b2 = tag("计算 + 设计评估", LV, 28)
         orr = T("或", 28, color=DIM)
-        branch = VGroup(b1, orr, b2).arrange(RIGHT, buff=0.5).next_to(g, DOWN, buff=0.5)
-        self.play(FadeIn(b1, shift=UP * 0.2), run_time=0.5)
+        dyn = T("动稳定能力：", 26, color=DIM)
+        branch = VGroup(dyn, b1, orr, b2).arrange(RIGHT, buff=0.4).next_to(g, DOWN, buff=0.5)
+        self.play(FadeIn(dyn), FadeIn(b1, shift=UP * 0.2), run_time=0.5)
         self.play(FadeIn(orr), FadeIn(b2, shift=UP * 0.2), run_time=0.6)
 
         # “试验前后比一比短路电抗，变化超限，说明绕组可能变形了。”
@@ -554,7 +555,7 @@ class S08_Outro(NarratedScene):
 
         # “一句话总结：中部轴向漏磁，把绕组里外撑开；”
         fr = VGroup(sec.radial_forces("lv", length=0.5), sec.radial_forces("hv", length=0.5))
-        l1 = VGroup(tag("中部", FIELD, 28), T("轴向漏磁 → 里外撑开", 34, bold=True)).arrange(RIGHT, buff=0.3)
+        l1 = VGroup(tag("中部", FIELD, 28), T("轴向漏磁 → 内外推开", 34, bold=True)).arrange(RIGHT, buff=0.3)
         l1.move_to([0.2 + l1.width / 2, 1.6, 0])
         head = T("一句话总结", 26, color=DIM).next_to(l1, UP, buff=0.35, aligned_edge=LEFT)
         self.play(FadeIn(head), run_time=0.4)
@@ -580,18 +581,18 @@ class S08_Outro(NarratedScene):
 # ============================================================ 封面
 class Cover(Scene):
     def construct(self):
-        center = LEFT * 3.75 + DOWN * 0.1
-        sec = Section(center=center, scale=0.84)
+        center = LEFT * 3.85 + DOWN * 0.1
+        sec = Section(center=center, scale=0.72)
         fl = sec.field(width=3).set_stroke(opacity=0.9)
         fr = VGroup(sec.radial_forces("lv", length=0.7), sec.radial_forces("hv", length=0.7),
                     sec.axial_forces("hv", max_len=0.9, color=ACCENT))
         self.add(sec, fl, fr)
-        t1 = T("变压器短路", 92, bold=True)
-        t2 = T("绕组为啥会变形？", 76, color=ACCENT, bold=True)
-        sub = T("一分钟看懂短路电动力", 38, color=TEXT)
+        t1 = T("变压器短路", 84, bold=True)
+        t2 = T("绕组为啥会变形？", 62, color=ACCENT, bold=True)
+        sub = T("两分钟看懂短路电动力", 34, color=TEXT)
         g = VGroup(t1, t2, sub).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
-        g.move_to([0.45 + g.width / 2, 0.5, 0])
+        g.move_to([-0.4 + g.width / 2, 0.5, 0])
         ep = tag("EP01", FORCE, 34).next_to(g, UP, buff=0.35, aligned_edge=LEFT)
-        chips = VGroup(tag("漏磁场", FIELD, 28), tag("洛伦兹力", HV, 28), tag("F ∝ I²", LV, 28)).arrange(RIGHT, buff=0.25)
+        chips = VGroup(tag("漏磁场", FIELD, 28), tag("安培力", HV, 28), tag("F ∝ I²", LV, 28)).arrange(RIGHT, buff=0.25)
         chips.next_to(g, DOWN, buff=0.5, aligned_edge=LEFT)
         self.add(g, ep, chips)

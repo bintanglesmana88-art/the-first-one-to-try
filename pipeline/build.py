@@ -27,8 +27,8 @@ ROOT = Path(__file__).resolve().parents[1]
 FONT = "Noto Sans CJK SC"
 
 LINE_GAP = 0.28    # 句间停顿（秒）
-SHOT_HEAD = 0.35   # 每镜开头留白
-SHOT_TAIL = 0.65   # 每镜结尾留白
+SHOT_HEAD = 0.3    # 每镜开头留白
+SHOT_TAIL = 0.5    # 每镜结尾留白
 
 
 def run(cmd, **kw):
